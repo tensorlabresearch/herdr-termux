@@ -5,11 +5,12 @@ for running local terminal workspaces on an Android phone in Termux.
 The package is based on Herdr 0.9.3 and uses the standard Termux prefix,
 `/data/data/com.termux/files/usr`.
 
-## Install on your phone
+## Install with pkg (recommended)
 
 Use the standard `com.termux` app installed from an
 [official Termux source](https://github.com/termux/termux-app#installation).
-Run these commands **inside Termux on your aarch64 phone**:
+Register the signed Herdr repository once, then install with `pkg`.
+Run these commands **inside Termux on your aarch64 phone** (Android API 24+):
 
 ```sh
 pkg update
@@ -26,13 +27,20 @@ APT authenticates the repository metadata and package downloads. The initial
 setup script is trusted through HTTPS GitHub Pages. No Rust or Zig compiler,
 root access, or GitHub login is required on the phone.
 
-`Ctrl+B`, then `Q`, detaches. Run `herdr` again to reattach.
-
 Run setup once per Termux installation. It is safe to repeat, and existing
 installations (including `v0.9.3-termux.1`) upgrade in place with `pkg install herdr`.
 The [repository guide](docs/PKG-REPOSITORY.md) covers trust, troubleshooting,
 removal, and maintenance. The [implementation plan](docs/PKG-REPOSITORY-PLAN.md)
 records the design and acceptance criteria.
+
+## Return to Termux
+
+Press **Ctrl+B**, release the keys, then press lowercase **q**. This detaches
+the Herdr interface and returns to the shell where you launched it. Workspaces
+and their processes keep running. Run `herdr` again to reattach.
+
+Typing `exit` inside a Herdr pane exits that pane's shell; use the detach
+shortcut to leave the interface while keeping your work running.
 
 ## Tab touch controls
 
@@ -59,14 +67,20 @@ This creates and removes an isolated test session and prints `PASS` on success.
 
 ## Update or remove
 
-From any Termux shell, run:
+After the one-time repository setup above, run:
 
 ```sh
 pkg upgrade
 ```
 
 This updates all installed Termux packages, including Herdr. To refresh the
-package lists and update only Herdr, run `pkg update && pkg install herdr`.
+package lists and update only Herdr:
+
+```sh
+pkg update
+pkg install herdr
+```
+
 New reviewed releases are published automatically to the signed repository.
 
 After an update, detach an open Herdr client with **Ctrl+B**, then **Q**, and
@@ -74,7 +88,6 @@ run `herdr` again to load the new interface. Updating does not stop running
 servers or pane processes. This release changes the client interface; future
 server changes may have additional restart guidance in their release notes.
 
-For a specific newer release, use `herdr-update --version v0.9.3-termux.2`.
 Check the installed downstream revision with `dpkg-query -W herdr`;
 `herdr --version` reports the upstream version (`0.9.3`).
 
@@ -86,12 +99,18 @@ does not install Android builds. To remove the package and its updater:
 pkg uninstall herdr
 ```
 
+## Direct-release alternative
+
 If you prefer not to register the APT repository, the original installer is
 still available; future updates on that path use `herdr-update`:
 
 ```sh
 curl -fL https://github.com/tensorlabresearch/herdr-termux/releases/latest/download/install.sh -o install-herdr.sh && bash install-herdr.sh
 ```
+
+For a specific newer release, use `herdr-update --version vVERSION-termux.REVISION`.
+To switch to `pkg` updates later, run the recommended repository setup above;
+there is no need to uninstall Herdr first.
 
 ## Build and package
 

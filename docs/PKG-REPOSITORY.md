@@ -2,6 +2,10 @@
 
 ## Phone setup and updates
 
+The signed APT repository is the recommended way to install and update this
+Herdr port. Register it once before using `pkg install herdr`; the package is
+not supplied by Termux's default repositories.
+
 Inside standard aarch64 Termux on Android API 24 or newer:
 
 ```sh
@@ -20,7 +24,9 @@ authentication or refresh fails. It changes only Herdr's source and key files.
 For normal updates, run `pkg upgrade`. This updates all installed packages.
 For only Herdr, use `pkg update && pkg install herdr`. Check the downstream
 version with `dpkg-query -W herdr`. After updating the interface, detach with
-Ctrl+B then Q and run `herdr` again. See each release's notes for server changes.
+Ctrl+B, release the keys, then press lowercase q and run `herdr` again.
+This leaves the workspaces running; see [returning to Termux](../README.md#return-to-termux).
+See each release's notes for server changes.
 
 The existing `herdr-update` command continues to fetch published GitHub Releases
 and does not require the APT source. Both methods use the same package name and

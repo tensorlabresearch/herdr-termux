@@ -2,6 +2,11 @@
 
 Tested on October 6, 2026. No physical phone was connected.
 
+For current phone installation and updates, use the
+[signed repository and pkg commands](../README.md#install-with-pkg-recommended).
+The results below describe the earlier runtime investigation; later package
+and APT checks are recorded in [validation](VALIDATION.md).
+
 ## Environment
 
 - Android emulator: the installed Samsung ZFold8 API36 AVD, started read-only

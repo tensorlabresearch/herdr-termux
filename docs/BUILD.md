@@ -1,5 +1,14 @@
 # Build and distribution
 
+## Install a published package
+
+For normal phone use, follow the [recommended pkg installation](../README.md#install-with-pkg-recommended):
+register the signed repository once with `setup-repo.sh`, then run
+`pkg install herdr`. Future updates use `pkg upgrade`. This also upgrades an
+existing direct-release installation without rebuilding or uninstalling Herdr.
+The [repository guide](PKG-REPOSITORY.md) contains the setup commands and signing
+details. The build instructions below are for producing new packages.
+
 ## Pinned inputs
 
 | Input | Version |
@@ -65,13 +74,20 @@ licenses and dependency notices.
 
 ## Release procedure
 
-Pushes to `main`, pull requests, manual dispatches, and downstream release tags
-run the build/package workflow. The package is installed and its complete smoke
+Application/build changes pushed to `main`, pull requests, manual dispatches,
+and downstream release tags run the build/package workflow. Documentation and
+APT-only pushes to `main` do not rebuild the application. The package is installed and its complete smoke
 test runs in a pinned Termux container on a native ARM GitHub runner. This tests
 the aarch64 binary without instruction translation. The container uses the
 runner's Linux kernel, so separate Android app testing remains necessary.
 Tag builds create a **draft** GitHub Release after those checks;
 publish it after the Android runtime checks pass.
+
+Publishing a stable release triggers the signed APT repository workflow, which
+validates the released packages, tests installation and upgrades in native ARM
+Termux userland, and deploys them to GitHub Pages. Users then receive the new
+version through `pkg upgrade`. See [repository publication](PKG-REPOSITORY.md#publishing-releases)
+for manual dispatch, signing-key maintenance, and weekly metadata refresh.
 
 The workflow also runs the patched client shell tests on Linux. They exercise
 the same downstream tap handlers as the Android build, including tab menu
@@ -92,7 +108,8 @@ toolchain pins as needed, update the package version in the packager, tests,
 and workflow (including the exact-version updater check),
 and repeat runtime validation before publication.
 
-`install.sh` is also installed as `$PREFIX/bin/herdr-update`. It resolves
+The direct-release fallback, `install.sh`, is also installed as
+`$PREFIX/bin/herdr-update`. It resolves
 GitHub's latest published release once, then pins checksum and package downloads
 to that tag. `--version` bypasses discovery for an exact release. Debian version
 comparison skips installed equal/newer revisions. The package declares Bash,
