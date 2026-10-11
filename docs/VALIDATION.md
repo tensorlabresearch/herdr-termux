@@ -33,6 +33,27 @@ second pane, and a single tap focuses a pane without opening a menu. The
 compact switcher's tab entry also opens its menu on a double-tap. Screenshots
 are retained locally in `build/double-tap-runtime/`.
 
+[CI run 38163267883](https://github.com/tensorlabresearch/herdr-termux/actions/runs/38163267883)
+independently passed the Android build, client tests, packaging checks, native
+ARM package installation, updater no-op, and complete shell/session smoke.
+[Release `v0.9.3-termux.3`](https://github.com/tensorlabresearch/herdr-termux/releases/tag/v0.9.3-termux.3)
+contains the exact reviewed CI package: `herdr_0.9.3-3_aarch64.deb`, 5,295,816
+bytes, SHA-256
+`7d940c4db83df8dfe6d91c84416368eceb317e09447d7be92ac352f9dbb336a8`.
+The packaged binary SHA-256 is
+`842e4522ce61d4edbceaa0754186c78ae26699b2062b02def26a144709b6528d`.
+All release checksums, source patch hashes, and installer/smoke assets were
+checked against the committed tree.
+
+[APT publication run 38163763668](https://github.com/tensorlabresearch/herdr-termux/actions/runs/38163763668)
+passed candidate and public-HTTPS installation, then upgraded `0.9.3-1` to
+`0.9.3-3` with `pkg upgrade` and repeated the shell/session smoke on native
+ARM. The first deployment attempt exposed a Pages environment rule allowing
+only `main`; adding the specific `v*-termux.*` tag rule allowed the release
+event to deploy. The successful retry and live checks used the same tested
+signed artifact. The public InRelease signature, Packages digest, and revision-3
+package checksum were independently verified after deployment.
+
 The full upstream cross-platform suite and a physical phone remain outside
 the validation performed here.
 

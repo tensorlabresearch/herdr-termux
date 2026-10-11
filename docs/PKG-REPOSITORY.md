@@ -97,7 +97,10 @@ The CI secret is `HERDR_APT_SIGNING_KEY`, containing the ASCII-armored dedicated
 private signing key. It is imported into a temporary GNUPG directory for signing
 and removed afterward. Signing and deployment never run for pull requests.
 GitHub Pages uses an Actions publishing source and the `github-pages`
-environment. Workflow concurrency serializes publications.
+environment. Its deployment rules must allow the `main` **branch** and
+`v*-termux.*` **tags**: release-triggered jobs retain the release tag as their
+environment ref even though repository tooling is checked out from `main`.
+Workflow concurrency serializes publications.
 
 The initial local key backup and revocation certificate are under
 `~/.config/herdr-termux/apt-signing/`, outside this checkout, with private
