@@ -8,7 +8,7 @@ binary="$repo_dir/dist/herdr"
 source_dir="$repo_dir/upstream"
 output_dir="$repo_dir/dist"
 licenses_dir="$repo_dir/dist/licenses"
-version=0.9.3-2
+version=0.9.3-3
 prefix=/data/data/com.termux/files/usr
 readelf=${READELF:-readelf}
 
@@ -17,7 +17,7 @@ usage() {
 Usage: scripts/package-deb.sh [options]
   --binary PATH       Android aarch64 executable (default: dist/herdr)
   --source-dir PATH   Pinned upstream checkout (default: upstream)
-  --version VERSION   Debian version (default: 0.9.3-2)
+  --version VERSION   Debian version (default: 0.9.3-3)
   --output-dir PATH   Artifact directory (default: dist)
   --licenses-dir PATH Third-party license notices (default: dist/licenses)
 

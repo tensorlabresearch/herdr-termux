@@ -3,6 +3,39 @@
 Validation started October 6, 2026. This document distinguishes host packaging
 checks, an Android emulator, and the physical phone.
 
+## Double-tap touch update — October 11, 2026
+
+Revision `0.9.3-3` replaces the revision-2 single-tap tab menu with Android
+double-tap right-click emulation for tabs and panes. Stock Termux consumes
+long press for Android text selection; its quick taps emit paired left-button
+reports when the finger lifts. The client waits 300 ms before dispatching a
+single tap and converts a matching second tap into the existing right-button
+path. This also allows compact switcher entries to receive the second tap
+before a single selection closes the switcher.
+
+The patched client suite passes **308 tests**, with 2 existing ignored tests.
+Coverage includes both layout widths, compact agent entries, single-tap focus,
+menu parity with right-click, rename targeting, complete right-click
+passthrough, left-button input to mouse applications, tab dragging, distant or
+different targets, modifiers, disabled capture, and stale pending clicks.
+All 18 packaging/installer checks and 14 signed-repository checks pass, as do
+ShellCheck, actionlint, and changed-file Rust formatting checks. The source
+verification step now checks patch-added files against the expected temporary
+index, including when upstream's own index does not yet track those files.
+
+These host tests use the same gesture code with Android touch behavior enabled
+explicitly. Non-Android clients retain their existing double-click behavior.
+Both Android aarch64 and x86_64 release builds pass. The x86_64 binary passes
+the full shell/session smoke test launched through stock Termux v0.118.3 on
+the API 36.1 emulator. Actual Android taps open tab and pane menus at desktop
+and compact widths; Rename saves the new tab name, Split right creates a
+second pane, and a single tap focuses a pane without opening a menu. The
+compact switcher's tab entry also opens its menu on a double-tap. Screenshots
+are retained locally in `build/double-tap-runtime/`.
+
+The full upstream cross-platform suite and a physical phone remain outside
+the validation performed here.
+
 ## Packaging and installer
 
 Thirteen host checks pass using real Android ELF fixtures built with the NDK

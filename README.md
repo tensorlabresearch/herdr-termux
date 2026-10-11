@@ -42,17 +42,25 @@ and their processes keep running. Run `herdr` again to reattach.
 Typing `exit` inside a Herdr pane exits that pane's shell; use the detach
 shortcut to leave the interface while keeping your work running.
 
-## Tab touch controls
+## Tab and pane touch controls
 
-Tap a tab to select it and open **New tab / Rename / Close**. In the compact
-phone layout, open the switcher and tap a tab in its **tabs** section. Tap
-outside the menu or press Escape to dismiss it. Tab dragging with a mouse
-still reorders tabs.
+**Double-tap a tab or pane to perform a right-click.** Tabs open **New tab /
+Rename / Close**; panes open the existing pane options, including splitting,
+renaming, and closing. In the compact phone layout, double-tap a tab or an
+active machine's agent/pane entry in the switcher. Tap outside the menu or
+press Escape to dismiss it.
 
-Available starting with `v0.9.3-termux.2`.
+Make the two taps within 300 ms at approximately the same spot. A single tap
+selects after that short delay. Mouse dragging still reorders tabs and selects
+text. When a pane has right-click passthrough enabled and its program requests
+mouse input, the double-tap sends that program a right-click instead.
+
+Available starting with `v0.9.3-termux.3`; revision 2 opened tab menus on a
+single tap. Update with `pkg upgrade`, then detach and reopen Herdr.
 Keep Herdr's `[ui] mouse_capture = true` enabled (the default) so Termux sends
-taps to Herdr. Use a quick tap: a long press invokes Termux's Android text
-selection, which is handled by the Termux app.
+taps to Herdr. Long press still invokes Termux's Android text selection, as
+implemented in [Termux's gesture handler](https://github.com/termux/termux-app/blob/v0.118.3/terminal-view/src/main/java/com/termux/view/TerminalView.java).
+Double-tap works with the stock app and does not require a modified APK.
 
 ## Installation smoke test
 
@@ -83,7 +91,7 @@ pkg install herdr
 
 New reviewed releases are published automatically to the signed repository.
 
-After an update, detach an open Herdr client with **Ctrl+B**, then **Q**, and
+After an update, detach an open Herdr client with **Ctrl+B**, then lowercase **q**, and
 run `herdr` again to load the new interface. Updating does not stop running
 servers or pane processes. This release changes the client interface; future
 server changes may have additional restart guidance in their release notes.

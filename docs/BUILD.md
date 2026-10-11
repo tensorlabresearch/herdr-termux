@@ -18,7 +18,7 @@ details. The build instructions below are for producing new packages.
 | Zig | 0.16.0, archive SHA-256 verified by the build script |
 | Android NDK | 28.2.13676358 (r28c) |
 | Minimum Android API | 24 |
-| Release package | `herdr_0.9.3-2_aarch64.deb` |
+| Release package | `herdr_0.9.3-3_aarch64.deb` |
 
 Use a Linux x86_64 host with `curl`, `git`, `tar`, `xz`, `python3`, `binutils`,
 `dpkg-deb`, and `rustup`, plus the pinned Android NDK. On a host with the Android
@@ -36,7 +36,7 @@ bash scripts/build-android.sh
 rustup component add --toolchain 1.98.0 rust-docs
 RUSTUP_TOOLCHAIN=1.98.0 python3 scripts/collect-licenses.py --zig-cache .cache/zig-global
 bash scripts/package-deb.sh --binary dist/herdr --source-dir upstream \
-  --version 0.9.3-2 --output-dir dist --licenses-dir dist/licenses
+  --version 0.9.3-3 --output-dir dist --licenses-dir dist/licenses
 bash tests/test-packaging.sh
 ```
 
@@ -64,8 +64,9 @@ The patch series:
   `/tmp` fallback for SSH sockets.
 - Keeps the package-managed Android binary from being replaced by upstream's
   unsupported self-updater.
-- Opens the existing tab options on a tap, in both the tab bar and compact
-  mobile switcher, while retaining mouse drag-to-reorder.
+- Maps double-taps to right-clicks for tabs and panes on Android, including
+  active-machine tab/agent entries in the compact switcher. A 300 ms window
+  distinguishes a single tap; mouse dragging and pane passthrough are preserved.
 
 The executable has a Termux library RUNPATH and 16 KiB-compatible ELF segment
 alignment. The package script inspects the ELF architecture, loader, and
@@ -129,7 +130,7 @@ and `SHA256SUMS`. Regenerate the checksum list after copying the release scripts
 
 ```sh
 cp -f install.sh scripts/smoke-test.sh dist/
-(cd dist && sha256sum herdr_0.9.3-2_aarch64.deb install.sh smoke-test.sh build-info.txt > SHA256SUMS)
+(cd dist && sha256sum herdr_0.9.3-3_aarch64.deb install.sh smoke-test.sh build-info.txt > SHA256SUMS)
 ```
 
 On a phone or Android emulator running Termux:

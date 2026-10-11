@@ -69,8 +69,9 @@ GIT_INDEX_FILE="$EXPECTED_INDEX" git -C "$SOURCE_DIR" read-tree HEAD
 for patch_file in "$ROOT"/patches/*.patch; do
     GIT_INDEX_FILE="$EXPECTED_INDEX" git -C "$SOURCE_DIR" apply --cached "$patch_file"
 done
-EXPECTED_TREE=$(GIT_INDEX_FILE="$EXPECTED_INDEX" git -C "$SOURCE_DIR" write-tree)
-git -C "$SOURCE_DIR" diff --quiet "$EXPECTED_TREE" -- || fail 'upstream contains edits outside the release patches'
+# Use the expected index so newly added patch files are checked too, even when
+# the upstream checkout's own index has never tracked those paths.
+GIT_INDEX_FILE="$EXPECTED_INDEX" git -C "$SOURCE_DIR" diff --quiet -- || fail 'upstream contains edits outside the release patches'
 
 LIBC_FILE="$ROOT/build/zig-libc-$TARGET.conf"
 cat > "$LIBC_FILE.tmp" <<EOF
